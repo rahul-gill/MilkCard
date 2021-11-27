@@ -7,8 +7,6 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    with:
-      super_secret: ${{ secrets.build-token}}
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
