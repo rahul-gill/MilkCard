@@ -6,14 +6,15 @@ import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import com.rahul.apps.doodhcard.databinding.ItemEditDialogBinding
 
-fun createEditItemDialog(context: Context, dateTime: String, init: ListEntryItem.EntryData?, callback: (ItemModel) -> Unit) {
+fun createEditItemDialog(context: Context, dateTime: String, initData: ListEntryItem.EntryData?, callback: (ItemModel) -> Unit) {
     val binding = ItemEditDialogBinding.inflate(LayoutInflater.from(context), null, false)
     binding.dialogDatetime.text = dateTime
-    if(init != null){
-        binding.dialogMilkRate.setText("%.2f".format( init.rate))
-        binding.dialogMilkWeight.setText( "%.2f".format(init.weight))
-        binding.dialogMilkFat.setText("%.2f".format(init.fat))
+    if(initData != null){
+        binding.dialogMilkRate.setText(showFormattedDouble( initData.rate))
+        binding.dialogMilkWeight.setText(showFormattedDouble(initData.weight))
+        binding.dialogMilkFat.setText(showFormattedDouble(initData.fat))
     }
+
     AlertDialog.Builder(context)
         .setView(binding.root)
         .setPositiveButton("DONE") { _, _ ->
@@ -31,9 +32,4 @@ fun createEditItemDialog(context: Context, dateTime: String, init: ListEntryItem
         .setNegativeButton("CANCEL", null)
         .create()
         .show()
-}
-
-fun stringToDouble(value: String): Double{
-    return if(value.isBlank()) 0.0
-    else value.toDouble()
 }

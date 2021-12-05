@@ -3,6 +3,8 @@ package com.rahul.apps.doodhcard
 import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.datastore.core.DataStore
@@ -17,93 +19,92 @@ import com.squareup.moshi.adapters.Rfc3339DateJsonAdapter
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.text.SimpleDateFormat
 import java.util.*
 
 val Context.dataStore: DataStore<Preferences> by
         preferencesDataStore(name = "milk_data")
 
+@SuppressLint("SetTextI18n")
 class MainActivity : AppCompatActivity() {
-    lateinit var binding: ActivityMainBinding
-    lateinit var adapter: ItemListAdapter
-    private val moshiAdapter= Moshi.Builder().add(Date::class.java, Rfc3339DateJsonAdapter()).build().adapter(ItemModel::class.java)
-    @SuppressLint("SetTextI18n", "NotifyDataSetChanged")
+    private lateinit var binding: ActivityMainBinding
+    private lateinit var adapter: ItemListAdapter
+    private val moshiListAdapter= Moshi.Builder().add(Date::class.java, Rfc3339DateJsonAdapter()).build().adapter(ItemModelList::class.java)
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
         adapter = ItemListAdapter()
         binding.mainItemList.adapter = adapter
-        binding.addButton.setOnClickListener{
-            val sdf2 = SimpleDateFormat("dd/M/yyyy", Locale.getDefault())
-            val meDate = MEDate(Calendar.getInstance())
-            createEditItemDialog(this, sdf2.format(meDate.date) + " "+ meDate.session, null){
-                adapter.data.add(ListEntryItem.EntryData.from(it))
-                adapter.notifyItemChanged(adapter.data.size - 1)
-                var total = 0.0
-                for(i in adapter.data) if(i is ListEntryItem.EntryData) total += i.price
-                binding.totalAggregate.text = "Total till now:  Rs %.2f".format(total)
-            }
+        binding.addButton.setOnClickListener(itemAddListener)
+        binding.clearButton.setOnClickListener(itemsClearListener)
+        lifecycleScope.launch {
+            preferenceRead("milk_data_list")
         }
-        binding.clearButton.setOnClickListener {
-            binding.totalAggregate.text = "Total till now:  Rs 0.00"
-            adapter.data = mutableListOf(ListEntryItem.Header)
+    }
+
+
+    override fun onStop() {
+        super.onStop()
+        lifecycleScope.launch {
+            preferenceSave("milk_data_list")
+        }
+    }
+
+    override fun onSaveInstanceState(savedInstanceState: Bundle) {
+        savedInstanceState.putString("milk_list_data", moshiListAdapter.toJson(ItemModelList.from(adapter.data)))
+        super.onSaveInstanceState(savedInstanceState)
+    }
+
+    override fun onRestoreInstanceState(savedInstanceState: Bundle) {
+        super.onRestoreInstanceState(savedInstanceState)
+        savedInstanceState.getString("milk_list_data")?.let {
+            adapter.data = moshiListAdapter.fromJson(it)!!.toRecyclerViewData()
+        }
+
+    }
+
+    private fun totalUpdater(){
+        var total = 0.0
+        for(i in 1 until adapter.data.size){
+            total += (adapter.data[i] as ListEntryItem.EntryData).price
+        }
+        binding.totalAggregate.text = "Total:%.2f".format(total)
+    }
+
+    private suspend fun preferenceSave(key: String){
+        dataStore.edit{ data ->
+            data[stringPreferencesKey(key)] = moshiListAdapter.toJson(ItemModelList.from(adapter.data))
+        }
+    }
+    @SuppressLint("NotifyDataSetChanged")
+    private suspend fun preferenceRead(key: String){
+        val preferences: Flow<Preferences> = dataStore.data
+        val gottenData = preferences.first()[stringPreferencesKey(key)]
+        if(gottenData != null){
+            adapter.data =
+                moshiListAdapter.fromJson(gottenData)!!.toRecyclerViewData()
             adapter.notifyDataSetChanged()
         }
     }
 
-    override fun onPause() {
-        super.onPause()
-        lifecycleScope.launch {
-            save("milk_data_list", adapter.data)
-        }
-    }
-
-    @SuppressLint("SetTextI18n")
-    override fun onResume() {
-        super.onResume()
-        lifecycleScope.launch {
-            val list: MutableList<ListEntryItem> = mutableListOf(ListEntryItem.Header)
+    private val itemAddListener = View.OnClickListener {
+        val sdf2 = SimpleDateFormat("dd/M/yyyy", Locale.getDefault())
+        val meDate = MEDate(Calendar.getInstance())
+        createEditItemDialog(this, sdf2.format(meDate.date) + " " + meDate.session, null) {
+            adapter.data.add(ListEntryItem.EntryData.from(it))
+            adapter.notifyItemChanged(adapter.data.size - 1)
             var total = 0.0
-            read("milk_data_list").forEach {
-                list.add(ListEntryItem.EntryData.from(it))
-                total += it.price
-            }
-            adapter.data = list
+            for (i in adapter.data) if (i is ListEntryItem.EntryData) total += i.price
             binding.totalAggregate.text = "Total till now:  Rs %.2f".format(total)
         }
 
     }
-
-    private suspend fun save(key: String, value: MutableList<ListEntryItem>){
-        val serList = mutableListOf<ItemModel>()
-        for(i in 1 until value.size){
-            val item = value[i] as ListEntryItem.EntryData
-            serList.add(ItemModel(
-                weight = item.weight,
-                fat = item.fat,
-                rate = item.rate,
-                datetime = item.datetime
-
-            ))
-        }
-        dataStore.edit{ data ->
-            for(i in serList.indices) {
-                val dataStoreKey = stringPreferencesKey(key + i.toString())
-                data[dataStoreKey] = moshiAdapter.toJson(serList[i])
-            }
-            val dataStoreKey = stringPreferencesKey("$key-1")
-            data[dataStoreKey] = serList.size.toString()
-        }
-    }
-    private suspend fun read(key: String): MutableList<ItemModel> {
-        val serList = mutableListOf<ItemModel>()
-        val sizeStoreKey = stringPreferencesKey("$key-1")
-        val preferences: Flow<Preferences> = dataStore.data
-        val arrSize = preferences.first()[sizeStoreKey]?.toInt() ?: return mutableListOf()
-        for(i in 0 until arrSize){
-            val dataStoreKey = stringPreferencesKey(key + i.toString())
-            serList.add(moshiAdapter.fromJson(preferences.first()[dataStoreKey]!!)!!)
-        }
-        return serList
+    @SuppressLint("NotifyDataSetChanged")
+    private val itemsClearListener = View.OnClickListener {
+        binding.totalAggregate.text = "Total till now:  Rs 0.00"
+        adapter.data = mutableListOf(ListEntryItem.Header)
+        adapter.notifyDataSetChanged()
     }
 }

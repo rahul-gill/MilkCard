@@ -36,10 +36,10 @@ class ItemListAdapter: RecyclerView.Adapter<ItemListAdapter.ViewHolder>(){
         else {
             val pl = (player as ListEntryItem.EntryData)
             binding.milkDateTime.text = pl.showFormattedDateTime()
-            binding.milkWeight.text = pl.showFormattedDouble(pl.weight)
-            binding.milkFat.text = pl.showFormattedDouble(pl.fat)
-            binding.milkPrice.text = pl.showFormattedDouble(pl.price)
-            binding.milkRate.text = pl.showFormattedDouble(pl.rate)
+            binding.milkWeight.text = showFormattedDouble(pl.weight)
+            binding.milkFat.text = showFormattedDouble(pl.fat)
+            binding.milkPrice.text = showFormattedDouble(pl.price)
+            binding.milkRate.text = showFormattedDouble(pl.rate)
             binding.editButton.setOnClickListener {
                 createEditItemDialog(binding.root.context, pl.showFormattedDateTime(),pl){
                     data[position] = ListEntryItem.EntryData.from(it)
@@ -75,9 +75,6 @@ sealed class ListEntryItem{
             get() = rate * weight
         companion object{
             fun from(item: ItemModel) = EntryData(item.weight, item.fat, item.rate, item.datetime)
-        }
-        fun showFormattedDouble(value: Double): String{
-            return "%.2f".format(value)
         }
         fun showFormattedDateTime(): String{
             val sdf = SimpleDateFormat("MMMdd:", Locale.getDefault())

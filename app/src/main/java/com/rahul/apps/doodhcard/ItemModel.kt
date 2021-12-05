@@ -13,16 +13,15 @@ data class ItemModel(
 ){
     val price: Double
         get() = rate * weight
-    val formattedWeight: String
-        get() = showFormattedDouble(weight)
-    val formattedFat: String
-        get() = showFormattedDouble(fat)
-    val formattedRate: String
-        get() = showFormattedDouble(rate)
-    val formattedPrice: String
-        get() = showFormattedDouble(price)
-    private fun showFormattedDouble(value: Double): String{
-        return "%.3f".format(value)
+    companion object {
+        fun from(item: ListEntryItem.EntryData): ItemModel {
+            return ItemModel(
+                weight = item.weight,
+                fat = item.fat,
+                rate = item.rate,
+                datetime = item.datetime
+            )
+        }
     }
 }
 @JsonClass(generateAdapter = true)
@@ -37,5 +36,26 @@ class MEDate(dateTime: Calendar = Calendar.getInstance()){
             if(dateTime.time.after(midDay)) "E"
             else "M"
         date = Calendar.getInstance().time
+    }
+}
+
+@JsonClass(generateAdapter = true)
+data class ItemModelList(
+    val list: MutableList<ItemModel> = mutableListOf<ItemModel>()
+){
+    companion object{
+        fun from(recyclerViewData : MutableList<ListEntryItem>): ItemModelList {
+            val serList = mutableListOf<ItemModel>()
+            for(i in 1 until recyclerViewData.size){
+                val item = recyclerViewData[i] as ListEntryItem.EntryData
+                serList.add(ItemModel.from(item))
+            }
+            return ItemModelList(serList)
+        }
+    }
+    fun toRecyclerViewData(): MutableList<ListEntryItem> {
+        val retList: MutableList<ListEntryItem> = mutableListOf(ListEntryItem.Header)
+        for(i in list) retList.add(ListEntryItem.EntryData.from(i))
+        return retList
     }
 }
