@@ -10,6 +10,7 @@
         <entry key="app/src/main/res/drawable/ic_launcher_background.xml" value="0.23020833333333332" />
         <entry key="app/src/main/res/drawable/ic_launcher_foreground.xml" value="0.1" />
         <entry key="app/src/main/res/drawable/ic_milkcan.xml" value="0.23020833333333332" />
+        <entry key="app/src/main/res/drawable/rect_border.xml" value="0.365625" />
         <entry key="app/src/main/res/drawable/ripple_effect.xml" value="0.23020833333333332" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.22" />
         <entry key="app/src/main/res/layout/item_edit_dialog.xml" value="0.22" />

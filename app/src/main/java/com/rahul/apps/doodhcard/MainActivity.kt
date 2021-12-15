@@ -3,7 +3,6 @@ package com.rahul.apps.doodhcard
 import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
@@ -15,13 +14,9 @@ import androidx.datastore.preferences.preferencesDataStore
 import androidx.lifecycle.lifecycleScope
 import com.rahul.apps.doodhcard.databinding.ActivityMainBinding
 import com.squareup.moshi.Moshi
-import com.squareup.moshi.adapters.Rfc3339DateJsonAdapter
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
-import java.text.SimpleDateFormat
-import java.util.*
 
 val Context.dataStore: DataStore<Preferences> by
         preferencesDataStore(name = "milk_data")
@@ -30,17 +25,18 @@ val Context.dataStore: DataStore<Preferences> by
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private lateinit var adapter: ItemListAdapter
-    private val moshiListAdapter= Moshi.Builder().add(Date::class.java, Rfc3339DateJsonAdapter()).build().adapter(ItemModelList::class.java)
+    private val moshiListAdapter= Moshi.Builder().build().adapter(ItemModelList::class.java)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
-        adapter = ItemListAdapter()
+        adapter = ItemListAdapter(onItemUpdateCallback = { totalUpdater() } )
         binding.mainItemList.adapter = adapter
         binding.addButton.setOnClickListener(itemAddListener)
         binding.clearButton.setOnClickListener(itemsClearListener)
         lifecycleScope.launch {
             preferenceRead("milk_data_list")
+            totalUpdater()
         }
     }
 
@@ -61,6 +57,7 @@ class MainActivity : AppCompatActivity() {
         super.onRestoreInstanceState(savedInstanceState)
         savedInstanceState.getString("milk_list_data")?.let {
             adapter.data = moshiListAdapter.fromJson(it)!!.toRecyclerViewData()
+            totalUpdater()
         }
 
     }
@@ -90,14 +87,10 @@ class MainActivity : AppCompatActivity() {
     }
 
     private val itemAddListener = View.OnClickListener {
-        val sdf2 = SimpleDateFormat("dd/M/yyyy", Locale.getDefault())
-        val meDate = MEDate(Calendar.getInstance())
-        createEditItemDialog(this, sdf2.format(meDate.date) + " " + meDate.session, null) {
-            adapter.data.add(ListEntryItem.EntryData.from(it))
+        createEditItemDialog(this, null) {  new_data ->
+            adapter.data.add(ListEntryItem.EntryData.from(new_data!!))
             adapter.notifyItemChanged(adapter.data.size - 1)
-            var total = 0.0
-            for (i in adapter.data) if (i is ListEntryItem.EntryData) total += i.price
-            binding.totalAggregate.text = "Total till now:  Rs %.2f".format(total)
+            totalUpdater()
         }
 
     }

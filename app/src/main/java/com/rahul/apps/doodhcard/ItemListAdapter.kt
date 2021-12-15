@@ -8,10 +8,10 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.rahul.apps.doodhcard.databinding.ListItemBinding
-import java.text.SimpleDateFormat
-import java.util.*
 
-class ItemListAdapter: RecyclerView.Adapter<ItemListAdapter.ViewHolder>(){
+class ItemListAdapter(
+    val onItemUpdateCallback: () -> Unit
+): RecyclerView.Adapter<ItemListAdapter.ViewHolder>(){
     var data = mutableListOf<ListEntryItem>(ListEntryItem.Header)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -35,15 +35,22 @@ class ItemListAdapter: RecyclerView.Adapter<ItemListAdapter.ViewHolder>(){
         }
         else {
             val pl = (player as ListEntryItem.EntryData)
-            binding.milkDateTime.text = pl.showFormattedDateTime()
-            binding.milkWeight.text = showFormattedDouble(pl.weight)
-            binding.milkFat.text = showFormattedDouble(pl.fat)
-            binding.milkPrice.text = showFormattedDouble(pl.price)
-            binding.milkRate.text = showFormattedDouble(pl.rate)
+            binding.milkDateTime.text = pl.datetime
+            binding.milkWeight.text = formattedDouble(pl.weight)
+            binding.milkFat.text = formattedDouble(pl.fat)
+            binding.milkPrice.text = formattedDouble(pl.price)
+            binding.milkRate.text = formattedDouble(pl.rate)
             binding.editButton.setOnClickListener {
-                createEditItemDialog(binding.root.context, pl.showFormattedDateTime(),pl){
-                    data[position] = ListEntryItem.EntryData.from(it)
-                    notifyItemChanged(position)
+                createEditItemDialog(binding.root.context,pl){ new_data ->
+                    if(new_data != null) {
+                        data[position] = ListEntryItem.EntryData.from(new_data)
+                        notifyItemChanged(position)
+                    }
+                    else{
+                        data.removeAt(position)
+                        notifyItemRemoved(position)
+                    }
+                    onItemUpdateCallback()
                 }
             }
         }
@@ -69,16 +76,12 @@ sealed class ListEntryItem{
         val weight: Double = 0.0,
         val fat: Double = 0.0,
         val rate: Double = 0.0,
-        val datetime: MEDate
+        val datetime: String
     ): ListEntryItem(){
         val price: Double
             get() = rate * weight
         companion object{
-            fun from(item: ItemModel) = EntryData(item.weight, item.fat, item.rate, item.datetime)
-        }
-        fun showFormattedDateTime(): String{
-            val sdf = SimpleDateFormat("MMMdd:", Locale.getDefault())
-            return sdf.format(datetime.date) + "" + datetime.session
+            fun from(milkCardEntry: MilkCardEntryModel) = EntryData(milkCardEntry.weight, milkCardEntry.fat, milkCardEntry.rate, milkCardEntry.datetime)
         }
     }
 }
