@@ -1,4 +1,4 @@
-package com.rahul.apps.doodhcard.data
+package com.github.rahul_gill.doodhcard.data
 
 import androidx.lifecycle.LiveData
 import androidx.room.*

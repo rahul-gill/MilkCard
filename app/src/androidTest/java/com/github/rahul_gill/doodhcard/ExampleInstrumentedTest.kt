@@ -1,4 +1,4 @@
-package com.rahul.apps.doodhcard
+package com.github.rahul_gill.doodhcard
 
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.ext.junit.runners.AndroidJUnit4

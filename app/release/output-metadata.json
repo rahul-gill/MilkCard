@@ -4,7 +4,7 @@
     "type": "APK",
     "kind": "Directory"
   },
-  "applicationId": "com.rahul.apps.doodhcard",
+  "applicationId": "com.github.rahul_gill.milkcard",
   "variantName": "release",
   "elements": [
     {

@@ -1,4 +1,4 @@
-package com.rahul.apps.doodhcard
+package com.github.rahul_gill.doodhcard
 
 
 import android.view.LayoutInflater
@@ -6,8 +6,8 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.rahul.apps.doodhcard.data.MilkCardEntity
-import com.rahul.apps.doodhcard.databinding.ListItemBinding
+import com.github.rahul_gill.doodhcard.data.MilkCardEntity
+import com.github.rahul_gill.doodhcard.databinding.ListItemBinding
 
 
 class ItemListAdapter(

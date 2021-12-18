@@ -1,4 +1,4 @@
-package com.rahul.apps.doodhcard
+package com.github.rahul_gill.doodhcard
 
 import org.junit.Test
 

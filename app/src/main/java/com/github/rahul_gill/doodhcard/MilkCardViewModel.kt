@@ -1,10 +1,10 @@
-package com.rahul.apps.doodhcard
+package com.github.rahul_gill.doodhcard
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
-import com.rahul.apps.doodhcard.data.MilkCardDatabase
-import com.rahul.apps.doodhcard.data.MilkCardEntity
+import com.github.rahul_gill.doodhcard.data.MilkCardDatabase
+import com.github.rahul_gill.doodhcard.data.MilkCardEntity
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 

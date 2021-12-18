@@ -1,4 +1,4 @@
-package com.rahul.apps.doodhcard.data
+package com.github.rahul_gill.doodhcard.data
 
 import android.content.Context
 import androidx.room.Database

@@ -1,4 +1,4 @@
-package com.rahul.apps.doodhcard
+package com.github.rahul_gill.doodhcard
 
 import android.app.Dialog
 import android.content.Context
@@ -7,8 +7,8 @@ import android.graphics.drawable.ColorDrawable
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.Toast
-import com.rahul.apps.doodhcard.data.MilkCardEntity
-import com.rahul.apps.doodhcard.databinding.ItemEditDialogBinding
+import com.github.rahul_gill.doodhcard.data.MilkCardEntity
+import com.github.rahul_gill.doodhcard.databinding.ItemEditDialogBinding
 
 fun createEditItemDialog(context: Context,initData: MilkCardEntity?, callback: (MilkCardEntity?) -> Unit) {
     val binding = ItemEditDialogBinding.inflate(LayoutInflater.from(context), null, false)

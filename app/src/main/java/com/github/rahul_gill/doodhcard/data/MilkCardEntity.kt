@@ -1,7 +1,7 @@
-package com.rahul.apps.doodhcard.data
+package com.github.rahul_gill.doodhcard.data
 
 import androidx.room.Entity
-import com.rahul.apps.doodhcard.Util
+import com.github.rahul_gill.doodhcard.Util
 
 const val MILK_CARD_TABLE = "milk_card"
 

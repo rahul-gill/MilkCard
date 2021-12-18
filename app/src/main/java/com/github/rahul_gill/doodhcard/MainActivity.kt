@@ -1,4 +1,4 @@
-package com.rahul.apps.doodhcard
+package com.github.rahul_gill.doodhcard
 
 import android.app.Dialog
 import android.graphics.Color
@@ -11,9 +11,9 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
-import com.rahul.apps.doodhcard.data.MilkCardEntity
-import com.rahul.apps.doodhcard.databinding.ActivityMainBinding
-import com.rahul.apps.doodhcard.databinding.DeleteConfirmDialogBinding
+import com.github.rahul_gill.doodhcard.data.MilkCardEntity
+import com.github.rahul_gill.doodhcard.databinding.ActivityMainBinding
+import com.github.rahul_gill.doodhcard.databinding.DeleteConfirmDialogBinding
 
 
 class MainActivity : AppCompatActivity() {
