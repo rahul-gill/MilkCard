@@ -14,4 +14,11 @@ data class MilkCardEntity(
     val weight: Double = 0.0,
     val fat: Double = 0.0,
     val rate: Double = 0.0
-)
+): Comparable<MilkCardEntity>{
+    val price: Double
+        get() = weight * rate
+
+    override fun compareTo(other: MilkCardEntity): Int {
+        return Util.compareDateTimeStrings(datetime, other.datetime)
+    }
+}

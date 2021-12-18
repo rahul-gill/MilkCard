@@ -1,3 +1,15 @@
 <resources>
     <string name="app_name">Milk Card</string>
+    <string name="total_text">Total: ₹%1s</string>
+    <string name="date">Date</string>
+    <string name="weight">Weight</string>
+    <string name="fat">FAT</string>
+    <string name="price">Price</string>
+    <string name="rate">Rate</string>
+    <string name="clear">Clear</string>
+    <string name="done">DONE</string>
+    <string name="cancel">Cancel</string>
+    <string name="delete">Delete</string>
+    <string name="confirm_delete_all_entries">Are you sure you want to delete all entries</string>
+    <string name="yes">YES</string>
 </resources>

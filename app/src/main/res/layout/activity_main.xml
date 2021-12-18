@@ -3,16 +3,15 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <data>
-
-    </data>
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context=".MainActivity"
         android:orientation="vertical">
 
+        <include
+            android:id="@+id/header"
+            layout="@layout/list_item" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/main_item_list"
@@ -29,33 +28,43 @@
         </androidx.recyclerview.widget.RecyclerView>
         <LinearLayout
             android:layout_width="match_parent"
-
+            android:background="@drawable/bottombar_bg"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:background="@color/design_default_color_secondary">
+            android:orientation="horizontal">
         <TextView
             android:id="@+id/total_aggregate"
             style="@style/TextAppearance.MaterialComponents.Headline6"
+            android:textColor="@color/black"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:layout_gravity="center_vertical"
-                android:layout_marginStart="8dp"
+            android:layout_marginStart="8dp"
             tools:text="Total till now" />
-        <Button
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/clear_button"
             android:layout_width="wrap_content"
-            android:layout_height="60dp"
-            android:text="CLEAR"/>
-        <ImageButton
-            android:id="@+id/add_button"
-            android:backgroundTint="@color/design_default_color_primary"
-            app:tint="@color/white"
-            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="end|bottom"
-            android:src="@drawable/ic_add"
-            android:foregroundGravity="center"/>
+            android:layout_gravity="center"
+            android:layout_marginHorizontal="4dp"
+            android:paddingVertical="10dp"
+            android:text="@string/clear"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+            android:textColor="@color/black"
+            app:rippleColor="#22444444"
+            app:strokeColor="@color/black"
+            />
+
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/add_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end|bottom"
+                android:layout_margin="4dp"
+                android:foregroundGravity="center"
+                android:src="@drawable/ic_add"
+                app:borderWidth="0dp"
+                tools:ignore="ContentDescription,SpeakableTextPresentCheck,ImageContrastCheck" />
         </LinearLayout>
     </LinearLayout>
 

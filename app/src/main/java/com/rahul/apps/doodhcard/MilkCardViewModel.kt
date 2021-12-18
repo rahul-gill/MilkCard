@@ -1,17 +1,20 @@
-package com.rahul.apps.doodhcard.data
+package com.rahul.apps.doodhcard
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
+import com.rahul.apps.doodhcard.data.MilkCardDatabase
+import com.rahul.apps.doodhcard.data.MilkCardEntity
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class MilkCardViewModel(app: Application): AndroidViewModel(app) {
     private val dao = MilkCardDatabase.getDatabase(app).milkCardDao
     val data = dao.getAll()
+    val total = dao.getTotal()
 
-    fun insertEntry(data: MilkCardEntity) = viewModelScope.launch(Dispatchers.IO) {
-        dao.insert(data)
+    fun insertEntry(vararg data: MilkCardEntity) = viewModelScope.launch(Dispatchers.IO) {
+        dao.insert(*data)
     }
 
     fun updateEntry(data: MilkCardEntity) = viewModelScope.launch(Dispatchers.IO) {

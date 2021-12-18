@@ -3,7 +3,13 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="../../../layout/custom_preview.xml" value="0.3635897435897436" />
         <entry key="app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.23020833333333332" />
+        <entry key="app/src/main/res/drawable/bottombar_bg.xml" value="0.3646153846153846" />
+        <entry key="app/src/main/res/drawable/button_bg.xml" value="0.3646153846153846" />
+        <entry key="app/src/main/res/drawable/delete_confirm_dialog.xml" value="0.3646153846153846" />
+        <entry key="app/src/main/res/drawable/dialog_bg.xml" value="0.3646153846153846" />
+        <entry key="app/src/main/res/drawable/edittext_bg.xml" value="0.3646153846153846" />
         <entry key="app/src/main/res/drawable/ic__milk_bottle.xml" value="0.23020833333333332" />
         <entry key="app/src/main/res/drawable/ic_add.xml" value="0.23020833333333332" />
         <entry key="app/src/main/res/drawable/ic_edit.xml" value="0.23020833333333332" />
@@ -12,9 +18,10 @@
         <entry key="app/src/main/res/drawable/ic_milkcan.xml" value="0.23020833333333332" />
         <entry key="app/src/main/res/drawable/rect_border.xml" value="0.365625" />
         <entry key="app/src/main/res/drawable/ripple_effect.xml" value="0.23020833333333332" />
-        <entry key="app/src/main/res/layout/activity_main.xml" value="0.22" />
-        <entry key="app/src/main/res/layout/item_edit_dialog.xml" value="0.22" />
-        <entry key="app/src/main/res/layout/list_item.xml" value="0.22" />
+        <entry key="app/src/main/res/layout/activity_main.xml" value="0.33" />
+        <entry key="app/src/main/res/layout/delete_confirm_dialog.xml" value="0.27943840579710144" />
+        <entry key="app/src/main/res/layout/item_edit_dialog.xml" value="0.33" />
+        <entry key="app/src/main/res/layout/list_item.xml" value="0.33" />
         <entry key="app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.23020833333333332" />
         <entry key="app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml" value="0.23020833333333332" />
       </map>

@@ -6,7 +6,7 @@ import androidx.room.*
 @Dao
 interface MilkCardDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insert(data: MilkCardEntity)
+    suspend fun insert(vararg data: MilkCardEntity)
 
     @Update
     suspend fun update(data: MilkCardEntity)
@@ -17,6 +17,9 @@ interface MilkCardDao {
     @Query("DELETE FROM $MILK_CARD_TABLE")
     suspend fun clearAll()
 
-    @Query("SELECT * FROM $MILK_CARD_TABLE AS a ORDER BY a.datetime ASC")
+    @Query("SELECT * FROM $MILK_CARD_TABLE")
     fun getAll(): LiveData<List<MilkCardEntity>>
+
+    @Query("SELECT SUM(a.weight * a.rate) FROM $MILK_CARD_TABLE AS a")
+    fun getTotal(): LiveData<Double>
 }
