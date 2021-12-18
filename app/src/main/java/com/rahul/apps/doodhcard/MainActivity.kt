@@ -8,6 +8,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import com.rahul.apps.doodhcard.data.MilkCardEntity
@@ -22,6 +23,8 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        installSplashScreen()
+
         viewModel = ViewModelProvider(this)[MilkCardViewModel::class.java]
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
         adapter = ItemListAdapter(onItemUpdateCallback = { data, del -> itemUpdateCallback(data, del) })
