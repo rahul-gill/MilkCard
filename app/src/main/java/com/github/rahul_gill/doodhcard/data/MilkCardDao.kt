@@ -17,7 +17,7 @@ interface MilkCardDao {
     @Query("DELETE FROM $MILK_CARD_TABLE")
     suspend fun clearAll()
 
-    @Query("SELECT * FROM $MILK_CARD_TABLE")
+    @Query("SELECT * FROM $MILK_CARD_TABLE AS a ORDER BY a.datetime")
     fun getAll(): LiveData<List<MilkCardEntity>>
 
     @Query("SELECT SUM(a.weight * a.rate) FROM $MILK_CARD_TABLE AS a")

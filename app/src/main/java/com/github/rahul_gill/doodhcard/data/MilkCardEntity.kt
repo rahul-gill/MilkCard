@@ -1,7 +1,7 @@
 package com.github.rahul_gill.doodhcard.data
 
 import androidx.room.Entity
-import com.github.rahul_gill.doodhcard.Util
+import java.util.*
 
 const val MILK_CARD_TABLE = "milk_card"
 
@@ -10,15 +10,11 @@ const val MILK_CARD_TABLE = "milk_card"
     primaryKeys = ["datetime"]
 )
 data class MilkCardEntity(
-    val datetime: String = Util.getDateTimeString(),
+    val datetime: Date = Calendar.getInstance().time,
     val weight: Double = 0.0,
     val fat: Double = 0.0,
     val rate: Double = 0.0
-): Comparable<MilkCardEntity>{
+){
     val price: Double
         get() = weight * rate
-
-    override fun compareTo(other: MilkCardEntity): Int {
-        return Util.compareDateTimeStrings(datetime, other.datetime)
-    }
 }

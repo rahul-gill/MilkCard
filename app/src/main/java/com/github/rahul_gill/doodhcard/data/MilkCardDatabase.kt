@@ -1,9 +1,7 @@
 package com.github.rahul_gill.doodhcard.data
 
 import android.content.Context
-import androidx.room.Database
-import androidx.room.Room
-import androidx.room.RoomDatabase
+import androidx.room.*
 
 const val DATABASE_NAME = "milk_card_database"
 
@@ -11,6 +9,7 @@ const val DATABASE_NAME = "milk_card_database"
     entities = [MilkCardEntity::class],
     version = 1,
     exportSchema = false)
+@TypeConverters(DateConverter::class)
 abstract class MilkCardDatabase : RoomDatabase() {
 
     abstract val milkCardDao: MilkCardDao

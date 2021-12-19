@@ -14,6 +14,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.github.rahul_gill.doodhcard.data.MilkCardEntity
 import com.github.rahul_gill.doodhcard.databinding.ActivityMainBinding
 import com.github.rahul_gill.doodhcard.databinding.DeleteConfirmDialogBinding
+import java.util.*
 
 
 class MainActivity : AppCompatActivity() {
@@ -38,9 +39,7 @@ class MainActivity : AppCompatActivity() {
             binding.totalAggregate.text = getString(R.string.total_text, Util.formattedDouble(total))
         }
         viewModel.data.observe(this){ entryList ->
-            adapter.submitList(
-                entryList.sortedWith{ o1, o2 -> Util.compareDateTimeStrings(o1.datetime, o2.datetime) }
-            )
+            adapter.submitList(entryList)
         }
     }
 

@@ -41,7 +41,7 @@ class ItemListAdapter(
             data: MilkCardEntity,
             onItemChange: (update: MilkCardEntity?) -> Unit
         ) {
-            binding.milkDateTime.text = data.datetime
+            binding.milkDateTime.text = Util.getDateTimeString(data.datetime)
             binding.milkWeight.text = Util.formattedDouble(data.weight)
             binding.milkFat.text = Util.formattedDouble(data.fat)
             binding.milkPrice.text = Util.formattedDouble(data.price)
